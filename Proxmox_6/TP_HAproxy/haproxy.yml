@@ -1,0 +1,38 @@
+---
+- hosts: 'haproxy'
+  remote_user: 'root'
+
+  tasks:
+  - name: Installation de HAproxy et actulisations
+    apt:
+      update_cache: 'yes'
+      name: '{{ item }}'
+    with_items:
+      - python-apt
+      - haproxy
+
+  - name: Création du dossier certs
+    file:
+      path: '/etc/haproxy/certs/'
+      state: 'directory'
+      mode: '0600'
+
+  - name: Copy du fichier de configurations HAproxy
+    copy:
+      src: '/home/daniel/Documents/haproxy/haproxy.cfg'
+      dest: '/etc/haproxy/haproxy.cfg'
+      owner: 'root'
+      mode: '0644'
+      follow: 'yes'
+
+  - name: Copy des certificats Let'sEncrypt
+    copy:
+      src: '/home/daniel/Documents/haproxy/certs/web.tpdaniel.fr.pem'
+      dest: '/etc/haproxy/certs/web.tpdaniel.fr.pem'
+      owner: 'root'
+      mode: '0600'
+      follow: 'yes'
+
+  - name: Eteindre HAproxy
+    shell: sleep 2 && shutdown -P now
+...
