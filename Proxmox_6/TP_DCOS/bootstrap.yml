@@ -1,0 +1,61 @@
+---
+- hosts: centos
+  remote_user : daniel
+  gather_facts: no
+  become: yes
+  vars:
+   passwd: "$6$rounds=656000$mysecretsalt$Ey8ftOL0pCGCwbmdJc8P3b01RywcqDNBP03MQbF2UOaVX57w.ZYgcSWTzc7aQlyFhLvnRF67DE9QPxhbxNkvu0"
+   user: 'daniel'
+   public_key: '/home/daniel/.ssh/id_rsa.pub'
+  tasks:
+    - name: Install a list of packages
+      yum:
+        pkg:
+        - sshpass
+        - vim
+        - sudo
+        - dmraid
+        - tar
+        - wget
+        - unzip
+        - curl
+        - ipset
+        state: present
+        update_cache: yes
+
+    - name: création d'un utilisateur
+      user:
+        name: "{{ user }}"
+        password: "{{ passwd }}"
+        groups: wheel
+        shell: /bin/bash        
+        generate_ssh_key: yes
+        state: present
+        
+    - name: Add a line to a file if the file does not exist, without passing regexp
+      lineinfile:
+        path: /etc/hosts
+        line: "{{ item.line }}"
+        owner: root
+        group: root
+        mode: '0644'
+        create: yes
+        state: present
+      with_items:
+             - { line: '192.168.0.90   bootstrap.tpdaniel.fr     bootstrap' }
+             - { line: '192.168.0.91   master1.tpdaniel.fr       master1' }
+             - { line: '192.168.0.92   master2.tpdaniel.fr       master2' }
+             - { line: '192.168.0.93   master3.tpdaniel.fr       master3' }
+             - { line: '192.168.0.94   agent.tpdaniel.fr         agent' }
+             - { line: '192.168.0.95   agentpublic.tpdaniel.fr   agentpublic' }
+    - name: stop service firewalld
+      systemd:
+        name: firewalld
+        state: stopped
+        enabled: no
+
+    - name: Put SELinux in permissive mode
+      selinux:
+        policy: targeted
+        state: permissive
+...
