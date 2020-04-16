@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+set -o nounset -o errexit
+MASTER_IP="192.168.0.91"
+echo $(/usr/sbin/ip route show to match 192.168.0.91 | grep -Eo '[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}' | tail -1)

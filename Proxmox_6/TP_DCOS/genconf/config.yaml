@@ -1,0 +1,21 @@
+bootstrap_url: http://192.168.0.90:7272
+cluster_name: Mesos
+exhibitor_storage_backend: static
+ip_detect_filename: /genconf/ip-detect
+master_discovery: static
+
+agent_list:
+- 192.168.0.94
+
+master_list:
+- 192.168.0.91
+- 192.168.0.92
+- 192.168.0.93
+
+public_agent_list:
+- 192.168.0.95
+
+resolvers:
+- 8.8.8.8
+- 8.8.4.4
+
