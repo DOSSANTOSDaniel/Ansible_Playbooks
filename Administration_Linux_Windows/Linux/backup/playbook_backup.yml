@@ -1,0 +1,15 @@
+---
+
+- hosts: pve1
+  remote_user: root
+  
+  tasks:
+  - name: Copiez un fichier en sauvegardant l'original s'il est diffèrent de la version copiée
+    copy:
+      src: /etc/haproxy/haproxy.conf
+      dest: /etc/haproxy/haproxy.conf
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
+...

@@ -1,0 +1,40 @@
+---
+- hosts: proxmox
+  remote_user: root
+  vars:
+    user: 'root@pam'
+    password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65353739633430643138353135303134616431306463646631666566646561313538653931323730
+          3638623634626135633764353566616534333737303933310a393431313634653032333766616635
+          61323338353637326563623038333065663133663432333666653662363931613333366365316436
+          3037636337636630340a353364356635373261623335616162333330346330643630663665393132
+          6332
+    host: '192.168.0.21'
+
+  tasks:
+  - name: stop ct
+    proxmox:
+      vmid: "{{ item.id }}"
+      node: 'pve1'
+      api_user: '{{ user }}' 
+      api_password: '{{ password }}'
+      api_host: '{{ host }}'
+      state: 'stopped'
+    loop:
+      - { id: '141' }
+      - { id: '142' }
+      - { id: '143' }
+
+  - name: remove ct
+    proxmox:
+      vmid: '{{ item.id }}'
+      api_user: '{{ user }}'
+      api_password: '{{ password }}'
+      api_host: '{{ host }}'
+      state: 'absent'
+    loop:
+      - { id: '141' }
+      - { id: '142' }
+      - { id: '143' }
+...

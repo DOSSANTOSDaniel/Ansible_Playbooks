@@ -1,0 +1,11 @@
+---
+- hosts: pve1
+  remote_user: root
+
+  tasks:
+    - name: Sync recursive mode, removing any files/directories found in destination that do not exist in the source
+      win_robocopy:
+        src: C:\DirectoryOne
+        dest: C:\DirectoryTwo
+        recurse: yes
+...

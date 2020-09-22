@@ -1,0 +1,19 @@
+---
+- hosts: pve1
+  remote_user: root
+  
+  tasks:
+  - name: Installation des dépendances sur un systeme de type Debian
+    raw: apt update && apt install python-apt python3-apt -y
+    when: ansible_os_family == 'Debian'
+
+  - name: Installation des dépendances sur un systeme de type RedHat
+    raw: dnf install python-dnf -y
+    when: ansible_os_family == 'RedHat'
+  
+  - name: Installation d'une application sur un systeme de type Debian
+    package:
+      name:
+        - htop
+      state: absent
+...

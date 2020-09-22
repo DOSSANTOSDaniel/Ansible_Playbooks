@@ -1,0 +1,13 @@
+---
+- hosts: pve1
+  remote_user: root
+  
+  tasks:
+    - name: Copy file with owner and permissions
+      copy:
+        src: /home/daniel/Images/Captures
+        dest: /root/
+        owner: root
+        group: root
+        mode: '0644'
+...

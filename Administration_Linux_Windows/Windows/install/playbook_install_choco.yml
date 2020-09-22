@@ -1,0 +1,14 @@
+---
+- hosts: pve1
+  remote_user: root
+
+# For non-Windows targets, use the copy module instead.
+  tasks:
+    - name: Install multiple packages
+      win_chocolatey:
+        name:
+          - procexp
+          - putty
+          - windirstat
+        state: present
+...

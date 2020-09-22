@@ -1,0 +1,9 @@
+---
+- hosts: nextcloud
+  become: true
+  remote_user: daniel
+  
+  tasks:
+    - name: poweroff
+      shell: 'sudo poweroff'
+...

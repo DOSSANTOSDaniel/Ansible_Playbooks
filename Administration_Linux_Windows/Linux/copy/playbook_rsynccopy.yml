@@ -1,0 +1,14 @@
+---
+- hosts: pve1
+  remote_user: root
+  
+  tasks:
+    - name: Synchronization using rsync protocol (pull)
+      synchronize:
+        mode: pull
+        src: rsync://somehost.com/path/
+        dest: /some/absolute/path/
+        recursive: yes
+        times: yes
+        perms: yes
+...

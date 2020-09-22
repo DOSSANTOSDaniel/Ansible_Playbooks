@@ -1,0 +1,12 @@
+---
+- hosts: pve1
+  remote_user: root
+
+# For non-Windows targets, use the copy module instead.
+  tasks:
+    - name: Copy a single file, but keep a backup
+      win_copy:
+        src: /srv/myfiles/foo.conf
+        dest: C:\Temp\renamed-foo.conf
+        backup: yes
+...

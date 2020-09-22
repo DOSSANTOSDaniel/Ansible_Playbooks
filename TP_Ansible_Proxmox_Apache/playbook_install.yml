@@ -1,0 +1,15 @@
+---
+- hosts: conteneurs
+  remote_user: root
+
+  tasks:
+  - name: Installation des dépendances
+    raw: apt update && apt install python-apt -y
+
+  - name: Installation de Apache2
+    apt:
+      name: apache2
+      state: present
+      update_cache: yes
+      upgrade: full
+...

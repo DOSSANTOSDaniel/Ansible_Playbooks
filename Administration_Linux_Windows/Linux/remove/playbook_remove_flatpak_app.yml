@@ -1,0 +1,11 @@
+---
+- hosts: pve1
+  remote_user: root
+  
+  tasks:
+  - name: Désinstalation
+    flatpak:
+      name: 
+        - htop
+      state: absent
+...

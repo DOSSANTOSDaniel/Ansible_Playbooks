@@ -1,0 +1,10 @@
+---
+- hosts: pve1
+  remote_user: root
+  
+  tasks:
+  - name: Installation application
+    snap:
+      name: htop
+      state: present
+...

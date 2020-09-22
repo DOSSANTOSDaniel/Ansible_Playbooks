@@ -1,0 +1,55 @@
+---
+- hosts: proxmox
+  remote_user: root
+  vars:
+    user: 'root@pam'
+    password: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          65353739633430643138353135303134616431306463646631666566646561313538653931323730
+          3638623634626135633764353566616534333737303933310a393431313634653032333766616635
+          61323338353637326563623038333065663133663432333666653662363931613333366365316436
+          3037636337636630340a353364356635373261623335616162333330346330643630663665393132
+          6332
+    host: '192.168.0.21'
+    key: "{{ lookup('file', '/home/daniel/.ssh/id_rsa.pub') }}"
+
+  tasks:
+  - name: Création des conteneurs
+    proxmox:
+      vmid: "{{ item.id }}"
+      node: 'pve1'
+      storage: 'local'
+      api_user: '{{ user }}' 
+      api_password: '{{ password }}'
+      api_host: '{{ host }}'
+      password: 'efficom'
+      searchdomain: "{{ item.domain }}"
+      hostname: "{{ item.name }}"
+      ostemplate: 'IsoImages:vztmpl/debian-10.0-standard_10.0-1_amd64.tar.gz'
+      nameserver: '8.8.8.8 8.8.4.4'
+      netif: "{{ item.net }}"
+      pool: 'WebTP'
+      cpus: '1'
+      disk: '12'
+      memory: '1024'
+      swap: '1024'
+      state: 'present'
+      pubkey: '{{ key }}'
+    loop:
+      - { id: '141', domain: 'web1.lan', name: 'serveurweb1', net: '{"net0":"name=eth0,ip=192.168.0.231/24,gw=192.168.0.1,bridge=vmbr0"}' }
+      - { id: '142', domain: 'web2.lan', name: 'serveurweb2', net: '{"net0":"name=eth0,ip=192.168.0.232/24,gw=192.168.0.1,bridge=vmbr0"}' }
+      - { id: '143', domain: 'web3.lan', name: 'serveurweb3', net: '{"net0":"name=eth0,ip=192.168.0.233/24,gw=192.168.0.1,bridge=vmbr0"}' }
+
+  - name: Démarrage des conteneurs
+    proxmox:
+      vmid: '{{ item.id }}'
+      api_user: '{{ user }}'
+      api_password: '{{ password }}'
+      api_host: '{{ host }}'
+      state: 'started'
+      timeout: '90'
+    loop:
+      - { id: '141' }
+      - { id: '142' }
+      - { id: '143' }
+...
