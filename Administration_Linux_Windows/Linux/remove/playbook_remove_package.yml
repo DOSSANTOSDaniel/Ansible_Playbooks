@@ -3,15 +3,15 @@
   remote_user: root
   
   tasks:
-  - name: Installation des dépendances sur un systeme de type Debian
+  - name: Installation des dépendances sur un système de type Debian
     raw: apt update && apt install python-apt python3-apt -y
     when: ansible_os_family == 'Debian'
 
-  - name: Installation des dépendances sur un systeme de type RedHat
+  - name: Installation des dépendances sur un système de type RedHat
     raw: dnf install python-dnf -y
     when: ansible_os_family == 'RedHat'
   
-  - name: Installation d'une application sur un systeme de type Debian
+  - name: Installation d'une application sur un système de type Debian
     apt:
       pkg:
         - htop
@@ -20,7 +20,7 @@
       autoclean: yes
     when: ansible_os_family == 'Debian'
     
-  - name: Installation d'une application sur un systeme de type RedHat
+  - name: Installation d'une application sur un système de type RedHat
     dnf:
       name: 
         - htop

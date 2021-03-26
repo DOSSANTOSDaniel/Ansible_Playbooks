@@ -3,15 +3,15 @@
   remote_user: root
   
   tasks:
-  - name: Installation des dépendances sur un systeme de type Debian
+  - name: Installation des dépendances sur un système de type Debian
     raw: apt update && apt install python-apt python3-apt -y
     when: ansible_os_family == 'Debian'
 
-  - name: Installation des dépendances sur un systeme de type RedHat
+  - name: Installation des dépendances sur un système de type RedHat
     raw: dnf install python-dnf -y
     when: ansible_os_family == 'RedHat'
   
-  - name: Mise à jour sur un systéme de type Debian
+  - name: Mise à jour sur un système de type Debian
     apt:
       upgrade: full
       autoremove: yes
@@ -19,7 +19,7 @@
       update_cache: yes
     when: ansible_os_family == 'Debian'
     
-  - name: Mise à jour sur un systéme de type RedHat
+  - name: Mise à jour sur un système de type RedHat
     dnf:
       name: "*"
       state: latest

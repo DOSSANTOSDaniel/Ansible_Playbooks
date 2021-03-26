@@ -6,7 +6,7 @@
   - name: Installation des dépendances
     raw: apt update && apt install python-apt -y
 
-  - name: Installation de Apache2
+  - name: Installation d'Apache2
     apt:
       name: apache2
       state: present

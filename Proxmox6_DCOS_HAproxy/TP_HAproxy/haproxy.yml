@@ -3,7 +3,7 @@
   remote_user: 'root'
 
   tasks:
-  - name: Installation de HAproxy et actulisations
+  - name: Installation de HAproxy et actualisations
     apt:
       update_cache: 'yes'
       name: '{{ item }}'
@@ -33,6 +33,6 @@
       mode: '0600'
       follow: 'yes'
 
-  - name: Eteindre HAproxy
+  - name: Éteindre HAproxy
     shell: sleep 2 && shutdown -P now
 ...
